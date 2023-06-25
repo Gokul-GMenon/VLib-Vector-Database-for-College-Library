@@ -1,0 +1,162 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    
+    font-family: 'EB Garamond', serif;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+.main{
+    width: 100%;
+    height: 100vh;
+    /* overflow: none; */
+    padding: 5%;
+    /* background-color: #2648FF; */
+}
+.container{
+    width: 100%;
+    height: 100%;
+    /* background-color: orange; */
+    padding: 1% 20% 20% 20%;
+    position: relative;
+}
+.menubar{
+    position: absolute;
+    right: 100px;
+    top: 20px;
+    font-size: 40px;
+    cursor: pointer;
+}
+/* .main-box{
+    width: 100%;
+    height: 100%;
+    
+} */
+.box{
+    width: 100%;
+    height: 100%;   
+    margin-top: 40px;
+    /* background-color: aqua; */
+    display: flex;
+    align-items: center;
+    
+    flex-direction: column;
+}
+.heading h1{
+    color: #000000;
+    margin-bottom: 20px;
+    font-weight: 400;
+    font-size: 39px;
+}
+.content{
+    margin-bottom: 20px;
+}
+.content h3{
+    font-weight: 600;
+    font-size: 20px;
+}
+.drag{
+    width: 100%;
+    height: 60px;
+    cursor: pointer;
+
+}
+.dottedBox{
+    width: 100%;
+    height: 60px;
+    border: 2px dotted rgb(69, 68, 68);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border-radius: 4px;
+border: 0.8px dashed var(--g-4, #939BA6);
+border-width: 2px;
+}
+.dottedBox p{
+    color: #939BA6;
+}
+.dottedBox span{
+    color: #2648FF;
+}
+.text{
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.text p{
+    margin-top: 5px;
+}
+div.shade{
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    background-color: #E9EBED;
+    margin-bottom: 10px;
+}
+.btn{
+    margin-top: 10px;
+    background-color: #27374D;
+    color: white;
+    padding: 10px 60px;
+    cursor: pointer;
+    position: absolute;
+    left: 670px;
+    top: 450px;
+}
+.btn i{
+    margin-right: 10px;
+}
+
+.popup {
+    /* Styles for the loading pop-up */
+    position: fixed;
+    top: 30%;
+    left: 33%;
+    right: 33%;
+    bottom: 30%;
+    background-color:white; /* Semi-transparent background color */
+    display: none;
+    z-index: 9999;
+    /* Add additional styles as needed */
+  }
+  
+  .blur-background {
+    /* CSS filter effect to blur the background */
+    filter: blur(2px); /* Adjust the blur intensity as needed */
+  }
+  .loader{
+    
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .popup-text{
+    font-weight: 700;
+  }
+  .popup-box{
+    height: 80px;
+    width: 60px;
+    transform: translateX(40%);
+    background-color: #27374D;
+    margin-bottom: 10px;
+    border: solid 1px;
+    animation:  swapColors 1s infinite;
+    
+  }
+
+
+  @keyframes swapColors {
+    0%{
+        background-color: #27374D;
+    }
+    50%{
+        background-color:#E9EBED;
+    }
+    0%{
+        background-color: #27374D;
+    }
+  }
