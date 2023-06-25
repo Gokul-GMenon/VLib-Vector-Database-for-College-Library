@@ -16,11 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from file_upload.views import upload_file,success
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('file_upload.urls'))
+    path('', include('file_upload.urls')),
+    
     # path('playground/',include('playground.urls')),
     # path('upload/',upload_file,name='upload'),
     # path('success/',success,name='success'),
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, name="media")

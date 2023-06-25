@@ -18,4 +18,19 @@ def upload_file(request):
 
 def success(request):
     name = File.objects.all().last().pdf.name
-    return render(request,'success.html', {'file': name})
+    print(name)
+    import os
+    import shutil
+
+    # Get the paths of the source file and the destination folder.
+    source_file_path = 'media\\' + name
+    name = name[name.rfind('/')+1:]
+    # name = '/file_upload/static/pdfs/'+name
+    dir = 'file_upload\static\pdfs\\' + name
+    print('\n\n',name)
+    
+    # Copy the file.
+    shutil.copy(source_file_path, dir)
+    # name = os.path.abspath('media/' + name)
+
+    return render(request,'success.html', {'file': dir[dir.find('\\')+1:]})
