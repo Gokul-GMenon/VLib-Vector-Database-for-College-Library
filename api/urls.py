@@ -19,5 +19,6 @@ import new_entry
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('new_entry.urls')),
+    path('addBook', include('new_entry.urls')),
+    path('findBook', include('findBook.urls')),
 ]

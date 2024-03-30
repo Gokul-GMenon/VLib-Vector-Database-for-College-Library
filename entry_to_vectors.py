@@ -33,7 +33,7 @@ class Vectorize:
         text = data['content']
         token_len = self.num_tokens_from_string(text)
         if token_len <= 512:
-            new_list.append([data['title'], data['content'], data['author'], data['year'], data['type'], token_len, data['genre']])
+            new_list.append([data['title'], data['content'], data['author'], data['year'], data['type'], data['path'], token_len, data['genre']])
         else:
             # add content to the new list in chunks
             start = 0
@@ -62,7 +62,7 @@ class Vectorize:
                 new_content_string = ' '.join(new_content)
                 new_content_token_len = self.num_tokens_from_string(new_content_string)
                 if new_content_token_len > 0:
-                    new_list.append([data['title'], new_content_string, data['author'], data['year'], data['type'], new_content_token_len, data['genre']])
+                    new_list.append([data['title'], new_content_string, data['author'], data['year'], data['type'], data['path'], new_content_token_len, data['genre']])
                 start += ideal_size
                 end += ideal_size
         

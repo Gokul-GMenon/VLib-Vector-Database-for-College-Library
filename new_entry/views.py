@@ -15,10 +15,6 @@ def save_uploaded_file(path,f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-@api_view(['GET'])
-def getData(request):   
-    return Response("Hello world!")
-
     # Get Data
 @api_view(['POST'])
 def addBook(request):   
@@ -40,6 +36,8 @@ def addBook(request):
         
         file_name = request.POST['title']+'.pdf'
         save_dir = os.path.join(path,file_name)
+        data_upload['path'] = save_dir
+        
         if not os.path.exists(save_dir):
             save_uploaded_file(save_dir, request.FILES['file'])
 
