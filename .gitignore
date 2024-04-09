@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 #ignore all pdf files
-.pdf
+*.pdf
