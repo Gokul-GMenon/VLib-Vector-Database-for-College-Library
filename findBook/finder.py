@@ -1,6 +1,7 @@
 from sentence_transformers import SentenceTransformer
 from pgvector.psycopg2 import register_vector
 from django.db import connection
+from collections import OrderedDict
 import numpy as np
 
 class FindBook:
@@ -46,34 +47,41 @@ class FindBook:
             doc_id_list = [entry[0] for entry in cursor.fetchall()]
             # print(doc_id_list)
 
-            print('docid list - ',doc_id_list, '\n\n')
+            print('docid list - ',str(tuple(doc_id_list)), '\n\n')
             
             # Looking for the most similar books
 
             if len(doc_id_list) > 1:
-                query = f"""SELECT DISTINCT doc_id from (SELECT doc_id from (
-                                                
-                                                                SELECT * from doc_embeddings where doc_id IN {str(tuple(doc_id_list))}) as subset 
-                                                    ORDER BY subset.doc_summary_vectors <-> %s LIMIT 3)"""
+                query = f"""SELECT doc_id from (
+                                                SELECT * from doc_embeddings where doc_id IN {str(tuple(doc_id_list))}) as subset 
+                                                    ORDER BY subset.doc_summary_vectors <-> %s"""
             else:
-                query = f"""SELECT DISTINCT doc_id from (SELECT doc_id from (
-                                                
-                                                                SELECT * from doc_embeddings where doc_id = {str(doc_id_list[0])}) as subset 
-                                                    ORDER BY subset.doc_summary_vectors <-> %s LIMIT 3)"""
-            
+                query = f"""SELECT doc_id from (
+                                                SELECT * from doc_embeddings where doc_id = {str(doc_id_list[0])}) as subset 
+                                                    ORDER BY subset.doc_summary_vectors <-> %s"""
             cursor.execute(query, (vector,))
+            
 
             doc_ids = [entry[0] for entry in cursor.fetchall()]
+            print('docids - ',doc_ids, '\n\n')
+            doc_ids = list(OrderedDict.fromkeys(doc_ids).keys())
 
             # Fetching book data
             print('docids - ',doc_ids, '\n\n')
+            # print("""select doc_id, doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id in """ + str(tuple(doc_ids)))
             if len(doc_ids) > 1:
-                cursor.execute("""select doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id in """ + str(tuple(doc_ids)))
+                cursor.execute("""select doc_id, doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id in """ + str(tuple(doc_ids)))
             else:
-                cursor.execute("""select doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id = """ + str(doc_ids[0]))
+                cursor.execute("""select doc_id, doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id = """ + str(doc_ids[0]))
 
-            book_details = [entry for entry in cursor.fetchall()]
+            book_details = {}
+            for entry in cursor.fetchall():
+                book_details[entry[0]] = entry[1:]
 
-            return book_details
-        
-        return 0
+            result = []
+
+            for id in doc_ids:
+
+                result.append(book_details[id])
+
+            return result

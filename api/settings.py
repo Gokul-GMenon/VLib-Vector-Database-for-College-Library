@@ -25,7 +25,15 @@ SECRET_KEY = 'django-insecure-6iwp9823m7^xfz(aj7he(i+)^yrg1vfjbfqcb=a8f4s6qu-1az
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+PORT_NUMBER = '8080'
+
+ip = ''
+with open('/home/gokul-g-menon/Documents/Projects/Btech Project Final Year/V-LIB/Phase 2/ip.txt') as f:
+    ip = f.readline().rstrip()
+
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.75', '192.168.117.193']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', ip]
 
 
 # Application definition
@@ -36,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'corsheaders',
     'django.contrib.staticfiles',
     'new_entry',
     'findBook',
@@ -50,10 +59,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware'
 ]
 
 ROOT_URLCONF = 'api.urls'
-
+CORS_ALLOW_ALL_ORIGINS = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

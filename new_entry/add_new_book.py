@@ -63,7 +63,7 @@ class NewBook():
                 data_list.append([id, data[-2].tolist()])
 
             execute_values(cursor, "INSERT INTO doc_embeddings (doc_id, doc_summary_vectors) VALUES %s", data_list)
-
+            print("added")
             """
             Check if genre already present. If not add genre
             """
