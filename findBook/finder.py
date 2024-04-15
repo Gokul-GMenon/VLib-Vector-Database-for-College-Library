@@ -52,32 +52,51 @@ class FindBook:
             # Looking for the most similar books
 
             if len(doc_id_list) > 1:
-                query = f"""SELECT doc_id from (
-                                                SELECT * from doc_embeddings where doc_id IN {str(tuple(doc_id_list))}) as subset 
-                                                    ORDER BY subset.doc_summary_vectors <-> %s"""
+                query = f"""SELECT doc_id, subset.doc_summary_vectors <=> %s as similarity from (
+                                                SELECT * from doc_embeddings where doc_id IN {str(tuple(doc_id_list))}) as subset
+                                                where subset.doc_summary_vectors <=> %s <0.6
+                                                ORDER BY subset.doc_summary_vectors <=> %s"""
             else:
-                query = f"""SELECT doc_id from (
+                query = f"""SELECT doc_id, subset.doc_summary_vectors <=> %s as similarity from (
                                                 SELECT * from doc_embeddings where doc_id = {str(doc_id_list[0])}) as subset 
-                                                    ORDER BY subset.doc_summary_vectors <-> %s"""
-            cursor.execute(query, (vector,))
+                                                where subset.doc_summary_vectors <=> %s <0.6
+                                                ORDER BY subset.doc_summary_vectors <=> %s"""
+            cursor.execute(query, (vector, vector, vector))
             
-
+            # similarity = [entry[0] for entry in cursor.fetchall()]
+            # print('Similarity - ', similarity)
             doc_ids = [entry[0] for entry in cursor.fetchall()]
             print('docids - ',doc_ids, '\n\n')
             doc_ids = list(OrderedDict.fromkeys(doc_ids).keys())
 
             # Fetching book data
             print('docids - ',doc_ids, '\n\n')
-            # print("""select doc_id, doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id in """ + str(tuple(doc_ids)))
+
+
+            # Collecting genres of each result
+            if len(doc_ids) > 1:
+                cursor.execute(f"""select sub.doc_id, genres.doc_genre_name from (select doc_id, doc_genre_id from id_genre where doc_id in {str(tuple(doc_ids))}) 
+                            as sub, doc_genre as genres where sub.doc_genre_id = genres.doc_genre_id""")
+            else:
+                cursor.execute(f"""select sub.doc_id, genres.doc_genre_name from (select doc_id, doc_genre_id from id_genre where doc_id = {str(doc_ids[0])}) 
+                            as sub, doc_genre as genres where sub.doc_genre_id = genres.doc_genre_id""")
+                
+            dict_of_genres = {}
+
+            for entry in cursor.fetchall():
+                dict_of_genres[int(entry[0])] = entry[1]
+
             if len(doc_ids) > 1:
                 cursor.execute("""select doc_id, doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id in """ + str(tuple(doc_ids)))
             else:
                 cursor.execute("""select doc_id, doc_name, doc_author, doc_publish_year, doc_type, doc_path from document where doc_id = """ + str(doc_ids[0]))
 
+            # Book details as dictionaries (indexed by bookids)
             book_details = {}
             for entry in cursor.fetchall():
-                book_details[entry[0]] = entry[1:]
-
+                book_details[entry[0]] = entry + (dict_of_genres[int(entry[0])],)
+                # print(entry[1], '\t', )
+            
             result = []
 
             for id in doc_ids:

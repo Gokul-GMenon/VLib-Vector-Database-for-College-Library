@@ -2,5 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.searchBook),
+    path('querySearch', views.searchBook),
+    path('getAllBooks', views.getAllBooks),
+    path('getTenBooks', views.getTenBooks),
+    path('getPDF', views.getPDF),
 ]

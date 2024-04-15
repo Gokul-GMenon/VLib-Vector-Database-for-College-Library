@@ -32,8 +32,8 @@ ip = ''
 with open('/home/gokul-g-menon/Documents/Projects/Btech Project Final Year/V-LIB/Phase 2/ip.txt') as f:
     ip = f.readline().rstrip()
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.75', '192.168.117.193']
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', ip]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.75', '192.168.225.176']
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.75', '192.168.117.196']
 
 
 # Application definition

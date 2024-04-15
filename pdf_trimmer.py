@@ -81,8 +81,7 @@ class PDFtoText:
         extracted_text = []
 
         # Intitial details as first page
-        pagewise_transcript = [f"""Title:{data['title']}\nAuthor:{data['author']}\n
-                               Year:{data['year']}\nType:{data['type']}\nGenre:{data['genre']}"""]
+        pagewise_transcript = []
         # pagewise_transcript_non_lemmatised = pagewise_transcript
 
 
@@ -194,15 +193,30 @@ class PDFtoText:
             
         # print('pagewise transcript - ', pagewise_transcript[1:8])
         # print('\npagewise transcript non lemmatised - ', pagewise_transcript_non_lemmatised[1:3])
-
-        transcript = ''
-        for page in pagewise_transcript:
-            transcript += "\n\n"
-            transcript += page
-
+        
         print("Transcript generation completed.\n")
 
-        return transcript, file_path
+        final_transcript = ''
+        for page in pagewise_transcript:
+            final_transcript += "\n\n"
+            final_transcript += page
+
+
+        # print("\n\nInitial - ", final_transcript)
+
+        # # Generating summary of the final transcripts for books larger than 500 pages
+        # if len(pages) > 10:
+        #     print("Initiating summary generation.\n")
+        #     summarizer = Summarizer()
+        #     final_transcript = summarizer.generate(final_transcript)
+
+        #     print("\n\nSummarised transcript - ", final_transcript)
+
+        #     print("Summary generation completed.\n")
+
+        final_transcript = f"""Title:{data['title']}\nAuthor:{data['author']}\n
+                               Year:{data['year']}\nType:{data['type']}\nGenre:{data['genre']}\n\n""" + final_transcript
+        return final_transcript, file_path
     
     def convert(self, file_name, path, data):
     

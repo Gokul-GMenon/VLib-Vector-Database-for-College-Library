@@ -49,7 +49,9 @@ def addBook(request):
         save_dir = os.path.join(path,file_name)
         data_upload['path'] = save_dir
         
+        print('\nNew book title - ',data_upload['title'], '\nPath - ', save_dir)
         if not os.path.exists(save_dir):
+            # if data_upload['title'] == 'DATABASE MANAGEMENT SYSTEMS':
             save_uploaded_file(save_dir, request.FILES['file'])
         print(request.FILES['file'])
         # Trimming pdf and using ocr to exract teh remaining content
