@@ -22,6 +22,14 @@ class NewBook():
         new_list = vectorize.token_limited_data(data_upload)
         new_list = vectorize.add_embeddings(new_list)
 
+        # """Testing code"""
+        # # Get embeddings
+        # vectorize = Vectorize()
+        # new_list_full_transcript = vectorize.token_limited_data_testing(data_upload)
+        # new_list_full_transcript = vectorize.add_embeddings(new_list_full_transcript)
+
+
+
         # Create a new pandas dataframe with the new list where the column names are the same as the original dataframe w   ith an additional column named "embeddings"
         df_new = pd.DataFrame(new_list, columns=['name', 'summary', 'author', 'year', 'type', 'path', 'token_len', 'genre', 'embeddings', 'genre_embeddings'])
 
@@ -54,6 +62,16 @@ class NewBook():
             execute_values(cursor, "INSERT INTO document (doc_name, doc_id, doc_author, doc_publish_year, doc_type, doc_summary, doc_path) VALUES %s", data_list)
 
 
+            # """
+            # Testing code
+            # """
+            # data_list = []
+            # for data in new_list_full_transcript:
+            #     data_list.append([row['name'], data[-2].tolist()])
+            
+            # # data_list = [[row['name'], id, row['author'], str(row['year']), row['type'], data_upload['content'], row['path']]]
+            # execute_values(cursor, "INSERT INTO document_testing (doc_name, doc_vector) VALUES %s", data_list)
+            # print("\nadded to doc testing\n\n")
             """
             Insert vectors
             """
@@ -61,9 +79,11 @@ class NewBook():
             data_list = []
             for data in new_list:
                 data_list.append([id, data[-2].tolist()])
-
             execute_values(cursor, "INSERT INTO doc_embeddings (doc_id, doc_summary_vectors) VALUES %s", data_list)
             print("added")
+
+
+
             """
             Check if genre already present. If not add genre
             """

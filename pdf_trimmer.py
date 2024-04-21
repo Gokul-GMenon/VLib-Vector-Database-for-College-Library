@@ -1,9 +1,12 @@
-import nltk
-from nltk.stem import PorterStemmer
-from nltk.stem import WordNetLemmatizer
+
+import pdfminer
+from pdfminer.high_level import extract_pages
+from pdfminer.layout import LTPage
+# from nltk.stem import PorterStemmer
+# from nltk.stem import WordNetLemmatizer
 from doctr.models import ocr_predictor
-from doctr.io import DocumentFile
-from summarizer import Summarizer
+# from doctr.io import DocumentFile
+# from summarizer import Summarizer
 import random
 import PyPDF2
 import os
@@ -19,37 +22,6 @@ class PDFtoText:
 
         pass
 
-
-    # def clean_text(self, text):
-    #     """
-    #         This function cleans a text string by removing non-alphanumeric characters,
-    #         performing stemming, and lemmatization.
-
-    #         Args:
-    #             text: The input string to be cleaned.
-
-    #         Returns:
-    #             A string containing only alphanumeric characters, stemmed and lemmatized.
-    #     """
-    #     # Remove non-alphanumeric characters
-    #     alphanumeric_only = ''
-
-    #     for char in text:
-    #         if char == ' ':
-    #             alphanumeric_only += ' '
-    #         elif char == '\n':
-    #             alphanumeric_only += '\n'
-    #         elif char.isalnum():
-    #             alphanumeric_only += char
-
-    #     # Lowercase the text (optional depending on your needs)
-    #     lowercase_text = alphanumeric_only.lower()
-
-    #     # Perform lemmatization
-    #     lemmatizer = WordNetLemmatizer()
-    #     lemmatized_text = lemmatizer.lemmatize(lowercase_text)
-
-    #     return lemmatized_text
 
 
     def page_selector(self, path, file_name, pages):
@@ -74,10 +46,7 @@ class PDFtoText:
 
         return file_path
     
-    def extract_text(self, path, data):
-        import pdfminer
-        from pdfminer.high_level import extract_pages
-        from pdfminer.layout import LTPage
+    def extract_text(self, path, data, full_pdf_path):
         extracted_text = []
 
         # Intitial details as first page
@@ -99,8 +68,26 @@ class PDFtoText:
                     # pagewise_transcript.append(transcript)
                     pagewise_transcript.append(page_text)
 
+        # """
+        # Testing code
+        # """
+        # full_transcript = []
+        # with open(full_pdf_path, 'rb') as pdf_file:
+        #     for page_layout in extract_pages(pdf_file):
+        #         # Check if it's a page object (not all layouts are pages)
+        #         if isinstance(page_layout, LTPage):
+        #             page_text = ""
+        #             for element in page_layout:
+        #                 # Extract text from different layout elements (text lines, characters, etc.)
+        #                 if hasattr(element, 'get_text'):
+        #                     page_text += element.get_text() + '\n'  # Add newline for readability
+        #             # pagewise_transcript_non_lemmatised.append(page_text)
+        #             # transcript = self.clean_text(page_text)
+        #             # pagewise_transcript.append(transcript)
+        #             full_transcript.append(page_text)
 
-        return pagewise_transcript#, pagewise_transcript_non_lemmatised
+
+        return pagewise_transcript #, full_transcript#, pagewise_transcript_non_lemmatised
 
     def main(self, file_name, path, pages, data):
         
@@ -161,39 +148,9 @@ class PDFtoText:
         print("Trimming complete.\n")
 
         # pagewise_transcript, pagewise_transcript_non_lemmatised = self.extract_text(file_path, data)
-        pagewise_transcript = self.extract_text(file_path, data)
+        pagewise_transcript = self.extract_text(file_path, data, os.path.join(path, file_name))
         
 
-        # print("\nInitiating pdf to text model for OCR")
-        # doc = DocumentFile.from_pdf(file_path)
-        # result = model(doc)
-
-        # print("\nOCR completed.\nInitiating collection of transcripts.")
-
-
-
-        # Intitial details as first page
-        # pagewise_transcript = [f"""Title:{data['title']}\nAuthor:{data['author']}\n
-        #                        Year:{data['year']}\nType:{data['type']}\nGenre:{data['genre']}"""]
-
-        # for page in result.pages:
-        #     blocks = page.blocks
-        #     non_lemmatized = ''
-        #     transcript = ''
-        #     for block in blocks:
-        #         for line in block.lines:
-        #             for word in line.words:
-        #                 transcript += " " + word.value
-        #             transcript += '. '
-        #         transcript += '\n'
-        #     non_lemmatized = transcript
-        #     transcript = self.clean_text(transcript)
-        #     pagewise_transcript.append(transcript)
-        #     pagewise_transcript_non_lemmatised.append(non_lemmatized)
-            
-        # print('pagewise transcript - ', pagewise_transcript[1:8])
-        # print('\npagewise transcript non lemmatised - ', pagewise_transcript_non_lemmatised[1:3])
-        
         print("Transcript generation completed.\n")
 
         final_transcript = ''
@@ -201,6 +158,14 @@ class PDFtoText:
             final_transcript += "\n\n"
             final_transcript += page
 
+        # """
+        # Testing code
+        # """
+        # final_full_transcript = ''
+        # for page in full_transcript:
+        #     final_full_transcript += "\n\n"
+        #     final_full_transcript += page
+        
 
         # print("\n\nInitial - ", final_transcript)
 
@@ -215,7 +180,7 @@ class PDFtoText:
         #     print("Summary generation completed.\n")
 
         final_transcript = f"""Title:{data['title']}\nAuthor:{data['author']}\n
-                               Year:{data['year']}\nType:{data['type']}\nGenre:{data['genre']}\n\n""" + final_transcript
+                               Year:{data['year']}\nType:{data['type']}\n\n""" + final_transcript
         return final_transcript, file_path
     
     def convert(self, file_name, path, data):

@@ -1,3 +1,4 @@
+from cache_manage import Manager
 from django.shortcuts import render
 from django.db import connection
 from rest_framework.response import Response
@@ -22,7 +23,13 @@ def save_uploaded_file(path,f):
 def addBook(request):   
     # def post(self, request):
 
+
     if request.method == 'POST':
+
+        # Empty cache before updating the database
+        cache_manager = Manager()
+        cache_manager.empty_cache()
+
 
         pdf2txt = PDFtoText();
         data_upload = {}
@@ -54,9 +61,10 @@ def addBook(request):
             # if data_upload['title'] == 'DATABASE MANAGEMENT SYSTEMS':
             save_uploaded_file(save_dir, request.FILES['file'])
         print(request.FILES['file'])
+        
         # Trimming pdf and using ocr to exract teh remaining content
         data_upload['content'], _ = pdf2txt.convert(file_name=file_name, path=path, data=data_upload)
         newBookEntry = NewBook()
-        newBookEntry.addBook(data_upload)
+        newBookEntry.addBook(data_upload)#, final_full_transcript)
 
         return Response(data_upload['title']+'  ADDED')

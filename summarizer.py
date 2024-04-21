@@ -11,7 +11,7 @@ class Summarizer:
 
     def generator(self, query, input_token_len):
 
-        together.api_key = "API KEY HERE"
+        together.api_key = "08fad8e93322f9686b077cbf250343fd3c721f8b2d27135a8369e22f8d907cdb"
 
         
         n_tokens_gen = 0
