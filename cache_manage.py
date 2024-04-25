@@ -35,9 +35,7 @@ class Manager:
             # Collect the count
             count_of_entries = cursor.fetchone()[0]
 
-            if count_of_entries != None:
-                count_of_entries = count_of_entries
-            else:
+            if count_of_entries == None:
                 count_of_entries = 0
 
         cache_entry_path = f"cache_file/cache_entry_{count_of_entries+1}.json"
@@ -124,7 +122,7 @@ class Manager:
 
             # Entry with 80% similarity should be present in the cache
             cursor.execute("""SELECT id, path from 
-                           doc_search_cache where query <=> %s <0.2 ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
+                           doc_search_cache where query <=> %s <0.15 ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
 
             result = cursor.fetchone()
 

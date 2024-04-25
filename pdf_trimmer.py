@@ -1,12 +1,5 @@
-
-import pdfminer
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTPage
-# from nltk.stem import PorterStemmer
-# from nltk.stem import WordNetLemmatizer
-from doctr.models import ocr_predictor
-# from doctr.io import DocumentFile
-# from summarizer import Summarizer
 import random
 import PyPDF2
 import os
@@ -91,9 +84,6 @@ class PDFtoText:
 
     def main(self, file_name, path, pages, data):
         
-        # Initiate the model
-        model = ocr_predictor(det_arch='db_resnet50', reco_arch='crnn_vgg16_bn', pretrained=True)
-
         """
         Select the pages to be vectorized
         """
