@@ -44,7 +44,7 @@ class FindBook:
         return words
 
 
-    def searcher_cross_embedding(self, cursor, vector, doc_id_list, top_k=32):
+    def searcher_cross_embedding(self, cursor, vector, doc_id_list, top_k=10):
 
         if len(doc_id_list) > 1:
             query = f"""SELECT doc_id, doc_summary from (
@@ -78,6 +78,7 @@ class FindBook:
     def searchBook(self, query):
 
         # Connect to and configure vector database
+        raw_query = query
         query = self.query_to_keyword_string(query)
         vector = self.queryToVec(query)
 
@@ -106,8 +107,8 @@ class FindBook:
                 # List of all genre_ids that matches
                 genre_list = [entry[0] for entry in cursor.fetchall()]
                 print('genre list - ', genre_list)
-                # Obtaining the corresponding books
 
+                # Obtaining the corresponding books
                 if len(genre_list) >1:
                     cursor.execute("""SELECT doc_id from 
                                 id_genre where doc_genre_id in """+ str(tuple(genre_list)))
@@ -117,7 +118,7 @@ class FindBook:
 
                 # List of all doc_ids that matches the required genre
                 doc_id_list = [entry[0] for entry in cursor.fetchall()]
-
+                
                 """
                 Testing code starts
                 """
@@ -127,7 +128,7 @@ class FindBook:
                 results = cursor.fetchall()
                 doc_ids = [entry[0] for entry in results]
                 doc_summaries = [entry[1] for entry in results]
-                cross_inp = [[query, hit] for hit in doc_summaries]
+                cross_inp = [[raw_query, hit] for hit in doc_summaries]
                 cross_scores = self.cross_encoder.predict(cross_inp)
                 final_result = []
 
@@ -151,7 +152,7 @@ class FindBook:
                 
                 max_score = hits[0]['cross-score']
                 
-                threshold_score = max_score*0.75
+                threshold_score = max_score*0.65
                 doc_id_set = set()
                 doc_ids = []
                 for hit in hits:
@@ -166,7 +167,7 @@ class FindBook:
                 # If yes, a flag is passed to compare the length of the pdf and the smallest pdf is kept higher.
                 flag_for_size_check = False
                 if len(doc_ids) > 1:
-                    if id_and_cross_score[doc_ids[0]]*0.80 <= id_and_cross_score[doc_ids[1]]:
+                    if id_and_cross_score[doc_ids[0]]*0.90 <= id_and_cross_score[doc_ids[1]]:
                         flag_for_size_check = True
 
 

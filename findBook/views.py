@@ -1,3 +1,4 @@
+import fitz, os, base64
 from findBook.queryToAnswer import QuerytoAnswer
 from rest_framework.response import Response
 from cache_manage import Manager
@@ -135,11 +136,15 @@ def getSummary(request):
      
      if request.method == 'POST':
           
+        print("Summary request processing...")
 
         query = request.POST['query']
         book_id = int(request.POST['id'])
         keywords_query = request.POST['keywords_query']
-        
+        want_page=0
+        if 'want_pages' in request.POST:
+            want_page = int(request.POST['want_pages'])
+
         with connection.cursor() as cursor:
             # Identify the genre ids for the given genre
             cursor.execute("""select doc_path from document 
@@ -158,6 +163,33 @@ def getSummary(request):
              'pages': best_pages,
              'answer': answer
         }
+
+        # Get the trimmed pdf into images
+        if want_page == 1:
+            
+            # Open the PDF document
+            pdf_doc = fitz.open(os.path.join(dir, filename))
+            page_image_paths = []
+            # Loop through each page and save as JPEG
+            # for page_number in range(len(pdf_doc)):
+            for page_number in best_pages:
+                page = pdf_doc[page_number-1]
+                pix = page.get_pixmap(matrix=fitz.Matrix(3, 3))  # Adjust zoom if needed
+                # pix.save(f"{filename}_page_{page_number+1}.jpg", dpi=200)  # Set desired DPI
+                page_image_paths.append(f"{filename}_page_{page_number}.jpg")
+                pix.save(page_image_paths[-1])  # Set desired DPI
+
+            # Opening all images
+            page_image_list = [open(image_path, 'rb').read() for image_path in page_image_paths]
+            # base64 encoding
+            page_image_list_binary = [base64.b64encode(image).decode('utf-8') for image in page_image_list]
+            # print(type(page_image_list_binary[0]))
+            response['image_list'] = page_image_list_binary
+            print("Collected all page images...")
+
+            for image in page_image_paths:
+                os.remove(image)
+
 
         with connection.cursor() as cursor:
             
@@ -179,8 +211,10 @@ def getSummary(request):
                     data['answer'] = answer
     
                 cache = Manager()
-                # print(response)
-                cache.add_remove_cache(query_vector, data)
+
+                cursor.execute("select count(*) from document");
+                size_of_cache = int(0.1*int(cursor.fetchone()[0]))
+                cache.add_remove_cache(query_vector, data, size_of_cache)
 
                 # Remove from temporary cache
                 cursor.execute("delete from cache_adder")

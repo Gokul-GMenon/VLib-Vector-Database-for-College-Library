@@ -8,7 +8,8 @@ class Manager:
     def __init__(self):
 
         # cache maximum size
-        self.threshold = 10
+        # self.threshold = 10
+        pass
 
     # To increment the no of searches encountered for a particular cache entry
     def update_search_count(self):
@@ -26,7 +27,7 @@ class Manager:
             cursor.execute(f"""UPDATE doc_search_cache SET no_of_cache_access = no_of_cache_access + 1 where id = {str(cache_id)}""")
 
     # To add to new entry/replacement to cache incase of absence
-    def add_remove_cache(self, query, json_to_save):
+    def add_remove_cache(self, query, json_to_save, threshold):
 
         with connection.cursor() as cursor:
             # Update the number of cache access for that cache entry
@@ -44,7 +45,7 @@ class Manager:
              f.write(json_data)
 
         # Add if no.of.entries < threshold (cache maximum size)
-        if count_of_entries < self.threshold:
+        if count_of_entries < threshold:
             print("\nCache not full...adding to cache")
             with connection.cursor() as cursor:
                 data_list = [[count_of_entries+1, query[0].tolist(), cache_entry_path, 0, 0]]
@@ -54,7 +55,7 @@ class Manager:
         else:
 
             # Calculating minimum eligibility for replacement based on cache size
-            threshold_seach = int(0.25*self.threshold)
+            threshold_search = int(0.25*threshold)
 
             with connection.cursor() as cursor:
 
@@ -69,7 +70,7 @@ class Manager:
                 for index, result in enumerate(results):
 
                     # For entries that are eligible for replacement
-                    if result[2] >= threshold_seach:
+                    if result[2] >= threshold_search:
                         
                         # If updated
                         if lowest_access['value'] != -1:
@@ -120,9 +121,9 @@ class Manager:
             # Update the total encountered search
             self.update_search_count()
 
-            # Entry with 80% similarity should be present in the cache
+            # Entry with 90% similarity should be present in the cache
             cursor.execute("""SELECT id, path from 
-                           doc_search_cache where query <=> %s <0.15 ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
+                           doc_search_cache where query <=> %s <0.10 ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
 
             result = cursor.fetchone()
 

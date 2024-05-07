@@ -88,7 +88,12 @@ class QuerytoAnswer:
                         );
                         """
 
-            cur.execute(table_create_command)
+            try:
+                cur.execute(table_create_command)
+            except:
+                cur.execute(f"drop table {title}")
+                cur.execute(table_create_command)
+
             print("\nTable created!")
 
             # Add pagewise transcript to the table of the book
@@ -96,9 +101,8 @@ class QuerytoAnswer:
             for i, page in enumerate(pagewise_transcript):
                 # print(i, end=' ')
                 data = self.token_limited_data_testing(page)
-                for sets in data:
-                    sets = [i]+ sets + [np.array(self.get_embeddings(sets[0]))]
-                    values.append(sets)
+                # for sets in data:
+                values += [[i]+ sets + [np.array(self.get_embeddings(sets[0]))] for sets in data]
             execute_values(cur, f"INSERT INTO {title} (id, transcript, embedding) VALUES %s", values)
             print("Table filled!")
 
@@ -181,8 +185,8 @@ class QuerytoAnswer:
 
         print("\nSending LLM query")
 
-        query = f"""Based on the context of the following page from a book (dont mention any intro words. Just the answer) enclosed in double quotes here - "{transcript}" and general knowledge, answer the 
-            user query - {actual_query}"""
+        query = f"""Based on the context of the following page from a book (Just mention the answer and not about the source) enclosed in double quotes here - "{transcript}" and general knowledge, answer the 
+            user query in 80 words- {actual_query}"""
 
         client = Together(api_key=open('together_api_key.txt', 'r').readline().rstrip('\n'))
 
