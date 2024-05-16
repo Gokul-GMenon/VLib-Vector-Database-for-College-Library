@@ -1,0 +1,122 @@
+
+.content{
+  height: fit-content;
+  width: 648px;
+  resize: none;
+  display: flex;
+  flex-direction: row;
+  padding: 12px 20px;
+gap: 8px;
+border: solid 1px #424587;
+border-radius: 100px;
+box-shadow:0 0 4px #2C35FF ;
+}
+.text-area {
+  width: 100%;
+    
+    text-overflow: ellipsis;
+    overflow:clip ;
+    font-size: 16px;
+    display: block;
+    outline: none;
+    border: none;
+    max-height: fit-content;
+    padding-top: 4px;
+    font-family: 'Inter',sans-serif;
+    font-weight: 500;
+  }
+  .search-bar{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #A6A8DA;
+    padding:16px 20px;
+    border-radius:24px;
+  }
+  .text-area::placeholder{
+    font-size: 16px;
+    color: #888990;
+    font-family: "Inter",sans-serif;
+    letter-spacing: -.5px;
+  }
+  .Hero-header{
+    font-size: 49px ;
+    font-weight: 500;
+    letter-spacing: -2px;
+    line-height: 59px;
+    margin: 0;
+  }
+  .container4{
+    display: flex;
+    flex-direction: column;
+    margin-top: 90px;
+    gap: 40px;
+  }
+  .search-space{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  button{
+    height: 40px;
+    padding: 0px 24px;
+    
+    color: #FAFAFF;
+    
+    
+    cursor: pointer;
+  }
+  .primary{
+    background-color:#3A3D84 ;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 100px;
+  }
+  .search-space-2{
+    display: flex;
+    justify-content: center;
+  }
+  .genre{
+    margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #DBDCFA;
+  border-radius: 100px;
+  display: flex;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  
+  }
+  .search-space-1{
+    width: 648px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+  .genre-input{
+    border: none;
+    padding: 0 0;
+    width: 100%;
+  }
+  .genre label{
+    font-size: 14px;
+    color: #3A3D84;
+    font-weight: 500;
+  }
+  .genre-input::placeholder{
+    content: "";
+    border: none;
+    font-size: 14px;
+    width: fit-content;
+    overflow: auto;
+    color: #888990;
+  }
+  .genre-input:focus{
+    content: "";
+    outline: none;
+  }

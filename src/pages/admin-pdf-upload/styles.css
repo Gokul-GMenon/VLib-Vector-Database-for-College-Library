@@ -1,0 +1,31 @@
+/* .admin-pdf-upload
+{
+
+    height: 618px;;
+    top:176px;
+    left:126px;
+    padding:24px 40px 24px 40px;
+    gap:48px;
+    background-color: #EEEE;
+    display: flex;
+    
+    background: #EEEE;
+
+} */
+
+
+.pdf-upload
+{
+    /* width:100vw; */
+    height: 618px;;
+    /* top:176px; */
+    left:126px;
+    padding:24px 40px 24px 40px;
+    gap:200px;
+    background-color: #F5F5FF;
+    display: flex;
+    flex-direction: row;
+    
+    background: #F5F5FF;
+
+}

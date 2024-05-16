@@ -1,0 +1,136 @@
+.container-dashboard
+{
+    display: flex;
+    flex-direction: column;
+    margin: 0 8%;
+    align-items: flex-start;
+    gap: 40px;
+    
+}
+.dashboard-items{
+    width:15%;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color:#EBF0FF ;
+    align-items: flex-start;
+    border: solid 2px #1d389a70;
+    border-radius: 4px;
+}
+.count{
+    font-size: 49px;
+    color: #1D389A;
+}
+.descr{
+    color: #627AD0;
+}
+.search{
+    display: flex;
+    gap: 4px;
+    padding: 8px 16px;
+    border: solid 1px #888990;
+    border-radius: 8px;
+    width: 50%;
+}
+.search-input{
+outline: none;
+border: none;
+font-family: 'Inter',sans-serif;
+font-size: 16px;
+font-weight: 500;
+}
+.search-input::placeholder{
+    color: #888990;
+}
+
+
+
+/* ----------------------------------------------------------- */
+/* Table stylings */
+.display-details{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+}
+.table-heading button{
+    background: none!important;
+    border: none;
+    font-size: 18px;
+    height: 40px;
+    padding: 0 16px;
+    color: #4B1B8A;
+    font-weight: 500;
+}
+.table-heading{
+display: flex;
+justify-content: space-between;
+align-items: center;
+
+}
+table{
+  
+    border-collapse: collapse;
+    border-width: 0 0 0 0;
+    border: solid 1px #D3D2FF;
+    width: 100%;
+}
+.table-header{
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -.5px;
+
+}
+button .text-button{
+    background-color: none!important;
+
+}
+.table th{
+    height: 36px;
+    padding: 0 24px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #8D829B;
+    text-align: left;
+    padding: 4px 16px;
+    border-bottom: solid 1px #D3D2FF;
+ 
+}
+thead{
+    padding-bottom: 16px;
+    height: fit-content;
+}
+table th,td,tr,thead,tbody{
+    border: none;
+}
+.book-details{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    gap: 4px;
+    text-align: left;
+    width: 100%;
+    padding: 12px 16px;
+    /* height: 64px;
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+
+}
+.table-row{
+    border-bottom: solid 1px #EFEFFF;
+    
+}
+.book-name{
+font-size: 16px;
+font-weight: 500;
+width: fit-content;
+}
+.book-author{
+font-size: 16;
+font-weight: 400;
+color: #888990;
+
+}

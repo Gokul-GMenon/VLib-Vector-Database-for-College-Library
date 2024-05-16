@@ -1,0 +1,132 @@
+/* .admin-pdf-upload
+{
+    width:687px;
+    height: 396px;
+    top:176px;
+    left:126px;
+    padding:24px 40px;
+    gap:48px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    background: white;
+    justify-content: center;
+} */
+.title
+{
+    width: 394px;
+    height: 72px;
+    gap: 8px;
+}
+
+.title .add
+{
+    width: 256px;
+    height:45px;
+    font-style: normal;
+    font-weight: 600px;
+    font-size: 37px;
+    line-height: 44.78px;
+    color:black;
+}
+.title p{
+    text-align: left;
+    width:394px;
+    height:19px;
+    font-weight:400px;
+    font-size: 16px;
+    line-height: 19.36px;
+    color: #939BA6;
+
+
+}
+
+.upload
+{
+
+    max-width:482px ;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 8px;
+    border:0.5px;
+    padding: 40px 64px 40px 64px;
+    background: #F5F5FF;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.upload .drag-and-drop
+{
+
+    height: 40px;
+    border-radius: 8px;
+    border:1px;
+    stroke-dasharray: 50% 30%;
+    border-style: dashed;
+    gap:12px;
+   color: #7073CA;
+   font-weight:500;
+   font-size:21px;
+    line-height: 25.41px;
+    letter-spacing: -2%;
+    display: flex;
+    align-items: center;
+    padding: 0px 24px;
+    /* max-width: fit-content;
+  margin-inline: auto; */
+
+}
+
+.upload .or
+{
+    width:434px;
+    height:17px;
+    gap:4px;
+    text-align: center;
+    color:#BDC1C7;
+
+}
+
+.upload .upload-button
+{
+    width:274px;
+    height:51px;
+    padding: 16px 24px 16px 24px;
+    gap:8px;
+    text-decoration: underline;
+    font-weight:400;
+    font-size: 16px;
+    line-height: 19.36px;
+    color:#3F45C7;
+    justify-content: center;
+    margin-inline: auto;
+    align-items: center;
+    
+}
+.upload .upload-button button
+{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19.36px;
+    border:none;
+    color:#3F45C7;
+    text-decoration: underline;
+    background: #F5F5FF;
+    cursor: pointer;
+    
+
+}
+
+.upload .upload-button .file
+{
+    width :226px;
+    height:19px;
+    font-weight:400;
+    font-size: 16px;
+    line-height: 19.36px;
+    color:#3F45C7;
+    border: none!important;
+    
+}
