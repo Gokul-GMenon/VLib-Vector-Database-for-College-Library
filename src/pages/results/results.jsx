@@ -8,6 +8,8 @@ import { navigate } from "react-router-dom";
 import { Document, Page } from '@react-pdf/renderer';
 import IP_ADDRESS from "../consts";
 import { useEffect } from "react";
+import { BarLoader, CircleLoader, ClipLoader, BeatLoader, RotateLoader, ScaleLoader, HashLoader } from "react-spinners";
+import Typewriter from 'typewriter-effect';
 
 
 export default function Results() {
@@ -25,6 +27,37 @@ export default function Results() {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [startYear, setStartYear] = useState(1970);
     const [endYear, setEndYear] = useState(2024);
+
+    const [summary, setSummary] = useState('');
+    const [loadingSummary, setLoadingSummary] = useState(false);
+    const [showText, setShowText] = useState(false);
+
+
+    const [isTyping, setIsTyping] = useState(false); // Initially not typing
+
+    console.log("api response is ", !(apiResponse['result']));
+
+    if(!(apiResponse['result'])){
+        console.log("no books available")
+    }
+
+    useEffect(() => {
+        if (loadingSummary) {
+            // Reset states on loading start
+            setIsTyping(false);
+            setShowText(false);
+        } else if (summary) {
+            // Trigger animation only once
+            setIsTyping(true);
+            const timeout = setTimeout(() => {
+                setIsTyping(false); // Set isTyping to false after animation
+                setShowText(true); // Show static text after timeout
+            }, 30 * summary.length);
+            return () => clearTimeout(timeout);
+        }
+    }, [loadingSummary, summary]);
+
+
 
 
 
@@ -75,10 +108,10 @@ export default function Results() {
             const bookYear = parseInt(book[3].slice(0, 4));
             // const isBookInSelectedGenres = (bookYear >= startYear &&  bookYear <= endYear) ? book : '';
             // return isBookInSelectedGenres;
-            if (bookYear >= startYear &&  bookYear <= endYear) {
+            if (bookYear >= startYear && bookYear <= endYear) {
                 return book;
             }
-    
+
         }
 
         const bookGenres = book[6]?.split(",") || [];
@@ -145,8 +178,6 @@ export default function Results() {
     async function handleTitleClick(bookId, title, author, pdf_url) { // Use bookId instead of location
         try {
             console.log(bookId);
-            // const response = await fetch(`http://192.168.1.75:8000/getBookPdf/${bookId}`); // Construct API endpoint for PDF by ID
-            // const pdfData = await response.blob(); // Assuming the API returns a PDF blob
 
             const formData = new FormData();
             formData.append('id', bookId);
@@ -156,7 +187,6 @@ export default function Results() {
                 body: formData,
                 headers: {
                     'Origin': `${IP_ADDRESS}`, // Replace with your React app's origin
-                    // "Content-Type": "application/json",
                 },
                 // redirect: 'follow'
             };
@@ -169,23 +199,17 @@ export default function Results() {
             const pdfData = await response.blob();
 
 
-
-
-
-
             const reader = new FileReader();
             reader.readAsDataURL(pdfData); // Read the PDF data as a data URL
 
 
             reader.onload = function (event) {
                 const pdfDataURL = event.target.result; // Get the data URL
-                console.log(pdfDataURL)
-
-                // console.log(apiResponse.result[bookId][1])
 
 
                 navigate("/view-pdf", {
                     state: {
+                        apiResponse,
                         pdfDataURL,
                         pdfData,
                         bookDetails: {
@@ -196,6 +220,8 @@ export default function Results() {
                             title: title,
                             author: author,
                         },
+
+
                     },
                 });
             }
@@ -207,6 +233,55 @@ export default function Results() {
         } catch (error) {
             console.error(error);
             // Handle errors, e.g., display an error message
+        }
+    }
+
+
+    async function handleSummary() {
+
+        if (apiResponse['answer']) {
+            setLoadingSummary(false);
+            setSummary(apiResponse['answer']);
+
+        }
+
+        else {
+            try {
+
+                setLoadingSummary(true); // Set loading state
+
+                const formData = new FormData();
+                formData.append('id', apiResponse['result'][0][0]);
+                formData.append('query', apiResponse['query']);
+                formData.append('keywords_query', apiResponse['keywords_query'])
+
+                var requestOptions2 = {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Origin': `${IP_ADDRESS}`,
+                    },
+
+                };
+
+                const response1 = await fetch(`${IP_ADDRESS}/findBook/getSummary`, requestOptions2)
+
+                if (!response1.ok) {
+                    throw new Error("failed"); // Handle errors gracefully
+                }
+
+                console.log(response1)
+
+                const data1 = await response1.json();
+
+                setSummary(data1['answer']);
+            }
+            catch (e) {
+                console.log(e)
+            }
+            finally {
+                setLoadingSummary(false); // Reset loading state
+            }
         }
     }
 
@@ -235,6 +310,7 @@ export default function Results() {
 
 
 
+
                     </textarea>
 
 
@@ -256,12 +332,20 @@ export default function Results() {
                     {/* <div className="genre">
                             <label htmlFor="genre">Genre</label>
                         </div> */}
+
+                    {
+                        loading && (
+                            <ScaleLoader color="#424587" size={100} />
+                        )
+                    }
+
                 </div>
                 <div className="search-space-2">
                     <button className="primary" type="submit" disabled={loading} onClick={handleButtonClick}>
 
                         {loading ? "Searching" : "Search"}
                     </button>
+
                 </div>
             </div>
             </div>
@@ -296,14 +380,14 @@ export default function Results() {
                                 max={endYear}
                                 onChange={handleStartYearChange}
                             />
-                            <span> - </span>
-                            <input
-                                type="number"
-                                value={endYear}
-                                min={startYear}
-                                max={2024}
-                                onChange={handleEndYearChange}
-                            /></div>
+                                <span> - </span>
+                                <input
+                                    type="number"
+                                    value={endYear}
+                                    min={startYear}
+                                    max={2024}
+                                    onChange={handleEndYearChange}
+                                /></div>
                         </div>
 
 
@@ -366,6 +450,70 @@ export default function Results() {
                         </div>
                     </div>
                 </div>
+
+                <div className="get-summary">
+                    <span className="gts-title">Want a quick answer ?</span>
+                    <span className="gts-subtitle">Get quick answerss for your queries in seconds</span>
+                    <button className="button-glow btn"  onClick={handleSummary}>
+
+                        {loadingSummary ? "Generating" : "Generate Answer"}
+                        
+                        {
+                        loadingSummary &&
+                        (
+                            <div className="loading">
+                                <HashLoader color="#8487E2" size={"25"} />
+                            </div>)
+                    }
+
+
+
+                    </button>
+
+                    <div className="answer">
+                        {/* {summary} */}
+
+
+                        {
+                            showText && (
+                                <div className="summary-text">
+                                    {summary}
+                                </div>
+                            )
+                        }
+
+                        {isTyping && ( // Display summary only if available
+                            <Typewriter
+                                options={{
+                                    autoStart: true, // Start animation only when isTyping is true
+                                    delay: 20,
+                                    strings: [summary],
+                                    cursor: "",
+                                    loop: 0, // Set loop to 0 to disable looping
+                                }}
+                            />
+                        )
+                        }
+
+
+
+                    </div>
+
+                    {/* {
+                        loadingSummary &&
+                        (
+                            <div className="loading">
+                                <BeatLoader color="#424587" />
+                            </div>)
+                    }
+ */}
+
+
+
+                </div>
+
+
+
             </div>
         </div>
 

@@ -1,4 +1,29 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  z-index: 999; /* Ensure it's on top of other content */
+}
 
+.spinner-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.MainContainer {
+  /* Your existing styles */
+  transition: background-color 0.5s ease; /* Smooth transition for background color */
+}
+
+.fade {
+  background-color: rgba(255, 255, 255, 0.964); /* Change background color to semi-transparent black */
+  opacity: 100%;
+}
 .content{
   height: fit-content;
   width: 648px;
@@ -10,10 +35,12 @@ gap: 8px;
 border: solid 1px #424587;
 border-radius: 100px;
 box-shadow:0 0 4px #2C35FF ;
+background-color: #ffff;
+z-index: 1;
 }
 .text-area {
   width: 100%;
-    
+    z-index: 1;
     text-overflow: ellipsis;
     overflow:clip ;
     font-size: 16px;
@@ -39,11 +66,14 @@ box-shadow:0 0 4px #2C35FF ;
     letter-spacing: -.5px;
   }
   .Hero-header{
-    font-size: 49px ;
+    font-size: 64px ;
     font-weight: 500;
     letter-spacing: -2px;
     line-height: 59px;
     margin: 0;
+    color: #56588B;
+    text-align: center;
+    font-family: "Gentium Book Plus", serif;
   }
   .container4{
     display: flex;
@@ -98,6 +128,9 @@ box-shadow:0 0 4px #2C35FF ;
     justify-content: center;
     gap: 12px;
   }
+  .searchIcon{
+    z-index: -1000;
+  }
   .genre-input{
     border: none;
     padding: 0 0;
@@ -120,3 +153,98 @@ box-shadow:0 0 4px #2C35FF ;
     content: "";
     outline: none;
   }
+/* Background*/
+.bg{
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  z-index: -100;
+  display: flex;
+  justify-content: space-between;
+}
+.hero-btn{
+  background: linear-gradient(111.83deg, #7E82D7 14.3%, #3B3E8A 108.89%);
+border: solid 2px #ABAEF4;
+padding:24px 48px;
+transition: all 2s ease!important;
+z-index: 10;
+}
+.hero-btn:hover{
+  background: linear-gradient(30.83deg, #7E82D7 14.3%, #3B3E8A 108.89%);
+
+}
+.el{
+  position: absolute;
+  overflow: none;
+  width: 100vw;
+}
+@keyframes moveUpDown {
+  0% {
+    transform: translateY(0); /* Start position */
+  }
+  50% {
+    transform: translateY(-10px); /* Midway position, moving up */
+  }
+  100% {
+    transform: translateY(0); /* End position, back to start */
+  }
+}
+
+.el svg:nth-child(odd) {
+  animation: moveUpDown 3s ease-in-out infinite; /* Apply the animation with 2s duration, ease-in-out easing, and infinite loop */
+}
+@keyframes moveUp {
+  0% {
+    transform: translateY(0); /* Start position */
+  }
+  50% {
+    transform: translateY(10px); /* Midway position, moving up */
+  }
+  100% {
+    transform: translateY(0); /* End position, back to start */
+  }
+}
+.el svg:nth-child(even) {
+  animation: moveUp 3s ease-in-out infinite; /* Apply the animation with 2s duration, ease-in-out easing, and infinite loop */
+}
+
+.el svg:nth-child(1){
+  position: relative;
+  top: 20px;
+  left: 50px;
+}
+.el svg:nth-child(2){
+  position: relative;
+  top: -100px;
+left: -300px;
+}
+.el svg:nth-child(3){
+  position: relative;
+  top: 0pxx;
+  right: -400px;
+}
+.el svg:nth-child(4){
+  position: relative;
+  top: 100px;
+  left: 80px;
+}
+.el svg:nth-child(5){
+  position: relative;
+  right:-1080px;
+ top: -300px;
+}
+.el svg:nth-child(6){
+  position: relative;
+  top: 100px;
+  right: 100px;
+}
+.el svg:nth-child(7){
+  position: relative;
+  top: -300px;
+  right: 80px;
+}
+.el svg:nth-child(8){
+  position: relative;
+  top: 200px;
+  right: 80px;
+}

@@ -28,17 +28,22 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    align-items: center;
+    text-align: center !important;
 }
 
 .success-detail {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 40px 0px;
-    width: 100%;
+    padding: 40px 40px;
+    width: 40vw;
     background-color: #F5F5FF;
     border: solid 1px #D3D2FF;
     border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+
 }
 
 .CTA {
