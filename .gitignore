@@ -161,3 +161,9 @@ cython_debug/
 
 #ignore all pdf files
 *.pdf
+
+# Ignore the .gitignore file itself
+.gitignore
+
+# Ignore the entire .vscode folder and its contents
+.vscode/
