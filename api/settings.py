@@ -32,8 +32,7 @@ ip = ''
 with open('/home/gokul-g-menon/Documents/Projects/Btech Project Final Year/V-LIB/Phase 2/ip.txt') as f:
     ip = f.readline().rstrip()
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.75', '192.168.33.176', '192.168.1.61', '192.168.1.55']
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.1.75', '192.168.117.196']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -91,9 +90,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'gokul',
-        'HOST': 'localhost',
+        'USER': 'USER_NAME',    #username of the postgres user
+        'PASSWORD': 'PASSWORD',    #password of the postgres user
+        'HOST': 'localhost',    #ip of the postgres server host
         'PORT': '',
     }
 }
