@@ -6,9 +6,6 @@ import json, os
 class Manager:
 
     def __init__(self):
-
-        # cache maximum size
-        # self.threshold = 10
         pass
 
     # To increment the no of searches encountered for a particular cache entry
