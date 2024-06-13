@@ -7,12 +7,6 @@ import os
 class PDFtoText:
 
     def __init__(self):
-
-        # try:
-        #     nltk.data.find('corpora/wordnet')
-        # except:
-        #     nltk.download('wordnet')
-
         pass
 
 
@@ -44,8 +38,6 @@ class PDFtoText:
 
         # Intitial details as first page
         pagewise_transcript = []
-        # pagewise_transcript_non_lemmatised = pagewise_transcript
-
 
         with open(path, 'rb') as pdf_file:
             for page_layout in extract_pages(pdf_file):
@@ -56,31 +48,10 @@ class PDFtoText:
                         # Extract text from different layout elements (text lines, characters, etc.)
                         if hasattr(element, 'get_text'):
                             page_text += element.get_text() + '\n'  # Add newline for readability
-                    # pagewise_transcript_non_lemmatised.append(page_text)
-                    # transcript = self.clean_text(page_text)
-                    # pagewise_transcript.append(transcript)
+
                     pagewise_transcript.append(page_text)
 
-        # """
-        # Testing code
-        # """
-        # full_transcript = []
-        # with open(full_pdf_path, 'rb') as pdf_file:
-        #     for page_layout in extract_pages(pdf_file):
-        #         # Check if it's a page object (not all layouts are pages)
-        #         if isinstance(page_layout, LTPage):
-        #             page_text = ""
-        #             for element in page_layout:
-        #                 # Extract text from different layout elements (text lines, characters, etc.)
-        #                 if hasattr(element, 'get_text'):
-        #                     page_text += element.get_text() + '\n'  # Add newline for readability
-        #             # pagewise_transcript_non_lemmatised.append(page_text)
-        #             # transcript = self.clean_text(page_text)
-        #             # pagewise_transcript.append(transcript)
-        #             full_transcript.append(page_text)
-
-
-        return pagewise_transcript #, full_transcript#, pagewise_transcript_non_lemmatised
+        return pagewise_transcript
 
     def main(self, file_name, path, pages, data):
         
@@ -137,7 +108,6 @@ class PDFtoText:
         
         print("Trimming complete.\n")
 
-        # pagewise_transcript, pagewise_transcript_non_lemmatised = self.extract_text(file_path, data)
         pagewise_transcript = self.extract_text(file_path, data, os.path.join(path, file_name))
         
 
@@ -147,27 +117,6 @@ class PDFtoText:
         for page in pagewise_transcript:
             final_transcript += "\n\n"
             final_transcript += page
-
-        # """
-        # Testing code
-        # """
-        # final_full_transcript = ''
-        # for page in full_transcript:
-        #     final_full_transcript += "\n\n"
-        #     final_full_transcript += page
-        
-
-        # print("\n\nInitial - ", final_transcript)
-
-        # # Generating summary of the final transcripts for books larger than 500 pages
-        # if len(pages) > 10:
-        #     print("Initiating summary generation.\n")
-        #     summarizer = Summarizer()
-        #     final_transcript = summarizer.generate(final_transcript)
-
-        #     print("\n\nSummarised transcript - ", final_transcript)
-
-        #     print("Summary generation completed.\n")
 
         final_transcript = f"""Title:{data['title']}\nAuthor:{data['author']}\n
                                Year:{data['year']}\nType:{data['type']}\n\n""" + final_transcript
@@ -180,13 +129,6 @@ class PDFtoText:
 
         pagewise_transcript, file_path = self.main(path=path, file_name=file_name, pages=pages, data=data)
 
-        # print("Full transcript - ", pagewise_transcript, '\n\n')
-
-        # summary_generator = Summarizer()
-        # full_transcript = summary_generator.generate(pagewise_transcript)
-
         if os.path.isfile(file_path):
             os.remove(file_path)
-
-        # return full_transcript, file_path
         return pagewise_transcript, file_path
