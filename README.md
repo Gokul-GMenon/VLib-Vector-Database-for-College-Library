@@ -1,5 +1,5 @@
-# VLIB - A College Library Management System built on Vector Database
-A library management platform that simplifies the search experience in a library by allowing any user to use any basic natural query to find the most appropriate resource. Simply put, the goal is to design a system that improves the search experience for users and make it easier to find what they are looking for.
+# VLIB - A College Library Management System built on Vector Database 💪💪
+A library management platform that simplifies the search experience in a library by allowing any user to use any basic natural query to find the most appropriate resource 🧠. Simply put, the goal is to design a system that improves the search experience for users and make it easier to find 🔍 what they are looking for.
 
 ## Technologies used :
 - ReactJS
@@ -13,6 +13,7 @@ A library management platform that simplifies the search experience in a library
 - Search for books using very basic and descriptive questions rather than specifically including certain keywords like author name, topic name etc.
 - Obtain AI generated answers for queries based on content from available top results reducing one step especially if youre in a lookout for quick answers
 - Will take you to the exact page of the book/material that discusses the content requested in the query.
+- LRU based semantic caching has been enabled for getting quicker results. It caches the most common search queries (eg: most beginner users search the same topics in the library) and loads it in when a queery of high semantic similarity is typed in.
 
 ## Requirements:
 ```
@@ -33,5 +34,6 @@ PostgreSQL 16.1
 3. Paste your together.ai api key in the **together_api_key.txt** file.
 4. Add the required ip addresses in **ALLOWED_HOSTS** in the settings.py file.
 5. Create a virtual environment and install all the required libraries as mentioned in requirements.txt file.
-6. Run the server and use the front end for first populating the database with data and then all the other library management systems.
-7. Enjoy!!
+6. Run the server and connect it to the front end.
+7. Use front end for first populating the database with data (document name, pdf, author name, publication date, genre, year)  and then enjoy all the other features.
+8. Enjoy!!
