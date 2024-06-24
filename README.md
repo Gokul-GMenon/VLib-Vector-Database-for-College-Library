@@ -1,70 +1,22 @@
-# Getting Started with Create React App
+# VLIB - A College Library Management System built on Vector Database 💪💪
+A library management platform that simplifies the search experience in a library by allowing any user to use any basic natural query to find the most appropriate resource 🧠. Simply put, the goal is to design a system that improves the search experience for users and make it easier to find 🔍 what they are looking for.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Technologies used :
+- ReactJS
+- DJango
+- PostgreSQL
+- pgvector
+- Mixtral
 
-## Available Scripts
+## Key Features:
+- Use as a replacement for conventional library management systems by adding books/material of various types and thereby building a database.
+- Search for books using very basic and descriptive questions rather than specifically including certain keywords like author name, topic name etc.
+- Obtain AI generated answers for queries based on content from available top results reducing one step especially if youre in a lookout for quick answers
+- Will take you to the exact page of the book/material that discusses the content requested in the query.
+- LRU based semantic caching has been enabled for getting quicker results. It caches the most common search queries (eg: most beginner users search the same topics in the library) and loads it in when a queery of high semantic similarity is typed in.
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Setting up the frontend:
+1. Install all packages with `npm install`
+2. Add the backend API url in 'src/pages/consts.js'
+3. Run the server with `npm start`
+4. Enjoy!!
