@@ -15,7 +15,7 @@ A library management platform that simplifies the search experience in a library
 - Will take you to the exact page of the book/material that discusses the content requested in the query.
 - LRU based semantic caching has been enabled for getting quicker results. It caches the most common search queries (eg: most beginner users search the same topics in the library) and loads it in when a queery of high semantic similarity is typed in.
 
-## Requirements:
+## Requirements for the backend API:
 ```
 Python 3.8.10
 PostgreSQL 16.1
@@ -28,7 +28,7 @@ PostgreSQL 16.1
 - Also create an additional table for the caching functionality under the name **doc_search_cache**. The table is as described below:
 ![cache schema](https://github.com/Gokul-GMenon/VLib-Vector-Database-for-College-Library/assets/76942680/b4e1c340-315e-4b51-900d-0b186204b9f3)
 
-## How to use:
+## How to setup the backend API:
 1. Create a PSQL database and all the tables as per the schema shown above with the mentioned names.
 2. Add the name of the postgres sql database, username, password, host and other details about the postgres server to settings.py.
 3. Paste your together.ai api key in the **together_api_key.txt** file.
