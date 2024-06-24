@@ -119,9 +119,9 @@ class Manager:
             # Update the total encountered search
             self.update_search_count()
 
-            # Entry with 85% similarity should be present in the cache
+            # Entry with 95% similarity should be present in the cache
             cursor.execute("""SELECT id, path from 
-                           doc_search_cache where query <=> %s <0.15 ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
+                           doc_search_cache where query <=> %s >0.95 ORDER BY query <=> %s DESC LIMIT 1""", (query_vector, query_vector))
 
             result = cursor.fetchone()
 
