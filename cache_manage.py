@@ -6,6 +6,7 @@ import json, os
 class Manager:
 
     def __init__(self):
+
         pass
 
     # To increment the no of searches encountered for a particular cache entry
@@ -119,8 +120,12 @@ class Manager:
             self.update_search_count()
 
             # Entry with 90% similarity should be present in the cache
+            cursor.execute("""SELECT query <=> %s from 
+                           doc_search_cache ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
+            score = cursor.fetchone()
+            print("\nScore - ", score)
             cursor.execute("""SELECT id, path from 
-                           doc_search_cache where query <=> %s <0.10 ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
+                           doc_search_cache where query <=> %s <0.15 ORDER BY query <=> %s LIMIT 1""", (query_vector, query_vector))
 
             result = cursor.fetchone()
 

@@ -58,23 +58,6 @@ class FindBook:
             cursor.execute(query, (vector,))
         return cursor
 
-
-    def searcher(self, cursor, vector, doc_id_list, threshold=0.6):
-
-        if len(doc_id_list) > 1:
-            query = f"""SELECT doc_id, subset.doc_summary_vectors <=> %s as similarity from (
-                                            SELECT * from doc_embeddings where doc_id IN {str(tuple(doc_id_list))}) as subset
-                                            where subset.doc_summary_vectors <=> %s <{str(threshold)}
-                                            ORDER BY subset.doc_summary_vectors <=> %s"""
-            cursor.execute(query, (vector, vector, vector))
-        else:
-            query = f"""SELECT doc_id, subset.doc_summary_vectors <=> %s as similarity from (
-                                            SELECT * from doc_embeddings where doc_id = {str(doc_id_list[0])}) as subset 
-                                            where subset.doc_summary_vectors <=> %s <{str(threshold)}
-                                            ORDER BY subset.doc_summary_vectors <=> %s"""
-            cursor.execute(query, (vector, vector, vector))
-        return cursor
-    
     def searchBook(self, query):
 
         # Connect to and configure vector database
@@ -85,14 +68,6 @@ class FindBook:
         cache = Manager()
         result = cache.check_cache(vector)
 
-        """
-        Disable cache
-        """
-        # result = -1
-
-
-
-        # self.dummy_comparison(vector)
         # Its a cache miss
         if result == -1:
 
@@ -119,9 +94,6 @@ class FindBook:
                 # List of all doc_ids that matches the required genre
                 doc_id_list = [entry[0] for entry in cursor.fetchall()]
                 
-                """
-                Testing code starts
-                """
                 # Collecting most similar results limited to 32
                 cursor = self.searcher_cross_embedding(cursor, vector, doc_id_list)
                 # print('cursor result - ', cursor.fetchall()[0])
@@ -163,66 +135,13 @@ class FindBook:
                     else:
                         break
 
-                # checking id highest cross score and second highest cross score are at 20% difference. 
+                # checking if highest cross score and second highest cross score are at 20% difference. 
                 # If yes, a flag is passed to compare the length of the pdf and the smallest pdf is kept higher.
                 flag_for_size_check = False
                 if len(doc_ids) > 1:
                     if id_and_cross_score[doc_ids[0]]*0.90 <= id_and_cross_score[doc_ids[1]]:
                         flag_for_size_check = True
 
-
-                # else:
-                #     threshold_score = max_score*2.5
-                #     doc_ids = []
-                #     for hit in hits:
-                #         if hit['cross-score']>=threshold_score:
-                #             doc_ids.append(hit['id'])
-                #         else:
-                #             break
-                # doc_ids = list(doc_ids)
-                
-
-                """
-                Testing code ends
-                """
-
-                """
-                Original code starts
-                """
-
-                # print('docid list - ',str(tuple(doc_id_list)), '\n\n')
-                
-                # # Looking for the most similar books with threshold=0.6
-                # cursor = self.searcher(cursor, vector, doc_id_list)
-                
-                # doc_ids = [entry[0] for entry in cursor.fetchall()]
-
-                # if doc_ids == []:
-
-                #     print("Accuracy - 0.6\n")
-                #     cursor = self.searcher(cursor, vector, doc_id_list, 0.6)
-                #     doc_ids = [entry[0] for entry in cursor.fetchall()]
-
-                #     if doc_ids == []:
-                #         # For accuracy 0.7
-                #         print("Accuracy - 0.7\n")
-                #         cursor = self.searcher(cursor, vector, doc_id_list, 0.7)
-                #         doc_ids = [entry[0] for entry in cursor.fetchall()]
-                #         print('docids - ',doc_ids, '\n\n')
-                #         doc_ids = list(OrderedDict.fromkeys(doc_ids).keys())
-
-                #     else:
-                #         # if its 0.6
-                #         print('docids - ',doc_ids, '\n\n')
-                #         doc_ids = list(OrderedDict.fromkeys(doc_ids).keys())
-                # else:
-                #     print("Accuracy - 0.3\n")
-                #     print('docids - ',doc_ids, '\n\n')
-                #     doc_ids = list(OrderedDict.fromkeys(doc_ids).keys())
-
-                """
-                Original code ends
-                """
 
                 # Fetching book data
                 print('docids - ',doc_ids, '\n\n')

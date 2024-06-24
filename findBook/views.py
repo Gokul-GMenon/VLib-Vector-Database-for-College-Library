@@ -26,9 +26,9 @@ def searchBook(request):
             return JsonResponse(bookList)
 
         if flag_for_size_check == True:
-            #  Swapping books in result if the size of the book in second result is less than 60% of the first book
+            #  Swapping books in result if the size of the book in second result is less than 40% of the first book
              
-            if len((PyPDF2.PdfReader(open(bookList[1][-2], 'rb'))).pages) < 0.60*int(len((PyPDF2.PdfReader(open(bookList[0][-2], 'rb'))).pages)):
+            if len((PyPDF2.PdfReader(open(bookList[1][-2], 'rb'))).pages) < 0.40*int(len((PyPDF2.PdfReader(open(bookList[0][-2], 'rb'))).pages)):
                 print('\nSwapping results!!!\n')
                 temp = bookList[0]
                 bookList[0] = bookList[1]
