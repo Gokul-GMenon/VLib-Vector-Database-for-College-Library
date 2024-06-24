@@ -17,6 +17,6 @@ A library management platform that simplifies the search experience in a library
 
 ## Setting up the frontend:
 1. Install all packages with `npm install`
-2. Add the backend API url in 'src/pages/consts.js'
+2. Add the backend API url in `src/pages/consts.js`
 3. Run the server with `npm start`
 4. Enjoy!!
